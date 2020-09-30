@@ -1,0 +1,80 @@
+<div class="row">
+
+  <div *ngIf="estacionamentoSelecionado" class="col-sm-6">
+
+    <app-titulo [titulo]="(estacionamentoSelecionado.id === 0 ? 'Novo Estacionamento' : 'Código: ' + estacionamentoSelecionado.id)">
+      <button class="btn btn-sm btn-outline-danger" (click)="voltar()">Fechar</button>
+    </app-titulo>
+
+    <form [formGroup]="estacionamentoForm" (submit)='estacionamentoSubmit()'>
+      <div class="form-group">
+        <label for="formGroupExampleInput ">Data, Hora - Entrada</label>
+        <input formControlName="dataEntrada" type="datetime-local" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="formGroupExampleInput">Veiculo</label>
+        <select class="form-control" formControlName="veiculoId">
+          <option selected>Selecione o Veiculo</option>
+          <option  *ngFor="let veiculo of veiculos" [value]="veiculo.id">{{veiculo.placa}}</option>
+        </select>
+      </div>
+      <br>
+      <div class="row form-group">
+        <button class="btn btn-success" [disabled]="!estacionamentoForm.valid">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <br>
+
+  <div *ngIf="!estacionamentoSelecionado" class="col-sm-12">
+    <app-titulo [titulo]="titulo">
+      <button class="btn btn-sm btn-success" (click)="novoEstacionamento()">Cadastrar Estacionamento</button>
+    </app-titulo>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Visualizar</th>
+          <th scope="col">#</th>
+          <th scope="col">Entrada</th>
+          <th scope="col">Saida</th>
+          <th scope="col">Veiculo</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Total</th>
+          <th scope="col">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let estacionamento of estacionamentos">
+          <td>
+            <button class="text-dark btn btn-sm btn-outline-warning"(click)="estacionamentoSelect(estacionamento)">Detalhes</button>
+          </td>
+          <td scope="row">{{estacionamento.id}}</td>
+          <td>{{estacionamento.dataEntrada}}</td>
+          <td>{{estacionamento.dataSaida}}</td>
+          <td>{{estacionamento.veiculo.placa}}</td>
+          <td>{{estacionamento.veiculo.modelo}}</td>
+          <td>R$ {{estacionamento.valorTotal}}</td>
+          <td>
+            <div class="btn-group">
+              <button (click)="salvarEstacionamento(estacionamento)" class="text-dark btn btn-sm btn-outline-primary">Finalizar Estacionamento</button>
+              <button (click)="excluirEstacionamento(estacionamento)" class="text-red  btn btn-sm btn btn-outline-danger">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body">
+    <app-veiculo></app-veiculo>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn pull-right" aria-label="Close" (click)="modalRef.hide()">
+      Fechar
+    </button>
+  </div>
+</ng-template>

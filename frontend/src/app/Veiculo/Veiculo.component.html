@@ -1,0 +1,82 @@
+<div class="row">
+
+  <div *ngIf="veiculoSelecionado" class="col-sm-12">
+
+    <app-titulo [titulo]="(veiculoSelecionado.id === 0 ? 'Novo Veiculo' : 'Código: ' + veiculoSelecionado.id)">
+      <button class="btn btn-sm btn-outline-danger" (click)="voltar()">Fechar</button>
+    </app-titulo>
+
+    <form [formGroup]="veiculoForm" (submit)="veiculoSubmit()">
+      <div class="form-group">
+        <label for="formGroupExampleInput">Placa</label>
+        <input formControlName="placa" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Marca</label>
+        <input formControlName="marca" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Modelo</label>
+        <input formControlName="modelo" type="text" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput">Cor</label>
+        <input formControlName="cor" type="text" class="form-control">
+      </div>
+      <div class="row form-group">
+        <button class="btn btn-success" [disabled]="!veiculoForm.valid">Salvar</button>
+      </div>
+    </form>
+  </div>
+
+  <br>
+
+  <div *ngIf="!veiculoSelecionado" class="col-sm-12">
+    <app-titulo [titulo]="titulo">
+      <button class="btn btn-sm btn-success" (click)="novoVeiculo()">Cadastrar veiculo</button>
+    </app-titulo>
+    <table class="table">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Visualizar</th>
+          <th scope="col">#</th>
+          <th scope="col">Placa</th>
+          <th scope="col">Marca</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Cor</th>
+          <th scope="col">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let veiculo of veiculos">
+          <td>
+            <button class="text-dark btn btn-sm btn-outline-warning"(click)="veiculoSelect(veiculo)">Detalhes</button>
+          </td>
+          <th scope="row">{{veiculo.id}}</th>
+          <td>{{veiculo.placa}}</td>
+          <td>{{veiculo.marca}}</td>
+          <td>{{veiculo.modelo}}</td>
+          <td>{{veiculo.cor}}</td>
+          <td>
+            <div class="btn-group">
+              <button (click)="excluirVeiculo(veiculo)" class="text-red btn btn-sm btn btn-outline-danger">Excluir</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body">
+    <app-estacionamento></app-estacionamento>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn pull-right" aria-label="Close" (click)="modalRef.hide()">
+      Fechar
+    </button>
+  </div>
+</ng-template>
+
+
